@@ -1,6 +1,6 @@
 {
-	"name": "pvc/core",
-	"description": "pvc core library",
+	"name": "pvc/frmtr",
+	"description": "pvc formatter library",
 	"type": "project",
 	"authors": [
 		{

@@ -9,6 +9,7 @@ namespace pvc\formatter\date_time;
 
 use Carbon\Carbon;
 use pvc\intl\Locale;
+use pvc\intl\TimeZone;
 use pvc\intl\UtcOffset;
 use pvc\intl\Time;
 
@@ -28,7 +29,7 @@ abstract class FrmtrTimeAbstract extends FrmtrDateTimeAbstract
      * @param Locale $locale
      * @param UtcOffset $utcOffset
      */
-    public function __construct(Locale $locale, UtcOffset $utcOffset)
+    public function __construct(Locale $locale, UtcOffset $utcOffset = null)
     {
         parent::__construct($locale);
         $this->setUtcOffset($utcOffset);
@@ -65,8 +66,13 @@ abstract class FrmtrTimeAbstract extends FrmtrDateTimeAbstract
      * @function setUtcOffset
      * @param UtcOffset $utcOffset
      */
-    public function setUtcOffset(UtcOffset $utcOffset): void
+    public function setUtcOffset(UtcOffset $utcOffset = null): void
     {
+        if (is_null($utcOffset)) {
+            $tz = new TimeZone();
+            $utcOffset = new UtcOffset();
+            $utcOffset->setUtcOffsetSeconds($tz->getOffset());
+        }
         $this->utcOffset = $utcOffset;
     }
 }

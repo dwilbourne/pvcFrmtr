@@ -7,11 +7,11 @@
 
 namespace tests\formatter\date_time;
 
+use Carbon\Carbon;
 use pvc\formatter\date_time\FrmtrTimeShort;
 use PHPUnit\Framework\TestCase;
 use pvc\intl\Locale;
 use pvc\intl\UtcOffset;
-use pvc\intl\Time;
 
 class FrmtrTimeShortTest extends TestCase
 {
@@ -27,13 +27,9 @@ class FrmtrTimeShortTest extends TestCase
      */
     public function testFormat(string $locale, string $timeZone, string $expectedResult) : void
     {
-        $time = new Time((13 * 3600) + (32 * 60));
-
-        $loc = new locale($locale);
-        $utcOffset = new UtcOffset();
-        $utcOffset->setUtcOffsetSeconds(0);
-        $frmtr = new FrmtrTimeShort($loc, $utcOffset);
-
+        $loc = new Locale($locale);
+        $frmtr = new FrmtrTimeShort($loc);
+        $time = Carbon::createFromTime(13, 32);
         self::assertEquals($expectedResult, $frmtr->format($time));
     }
 
@@ -50,12 +46,9 @@ class FrmtrTimeShortTest extends TestCase
     public function testFormatChange() : void
     {
         $locale = new locale('en_US');
-        $utcOffset = new UtcOffset();
-        $utcOffset->setUtcOffsetSeconds(0);
+        $time = Carbon::createFromTime(13, 32);
 
-        $time = new Time((13 * 3600) + (32 * 60));
-
-        $frmtr = new FrmtrTimeShort($locale, $utcOffset);
+        $frmtr = new FrmtrTimeShort($locale);
         $frmtr->setFormat('H:i:s');
         $expectedResult = '13:32:00';
         self::assertEquals($expectedResult, $frmtr->format($time));

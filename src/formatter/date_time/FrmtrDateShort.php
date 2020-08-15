@@ -12,7 +12,7 @@ use pvc\intl\DateTimePattern;
 /**
  * Class FrmtrDateShort
  */
-class FrmtrDateShort extends FrmtrDateAbstract
+class FrmtrDateShort extends FrmtrDateTimeAbstract
 {
     public function getPatternFromLocale(): string
     {

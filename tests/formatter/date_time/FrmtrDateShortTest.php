@@ -35,7 +35,7 @@ class FrmtrDateShortTest extends TestCase
         $dateString = '2002-05-20';
 
         $dt = new Carbon($dateString, $tz);
-        $frmtr = new FrmtrDateShort($loc, $tz);
+        $frmtr = new FrmtrDateShort($loc);
 
         self::assertEquals($expectedResult, $frmtr->format($dt));
     }
@@ -56,9 +56,9 @@ class FrmtrDateShortTest extends TestCase
         $timeZone = new timeZone('America/New_York');
 
         $dateString = '2002-05-20';
-        $dt = new Carbon($dateString, new timeZone(($timeZone)));
+        $dt = new Carbon($dateString, new TimeZone(($timeZone)));
 
-        $frmtr = new FrmtrDateShort($locale, $timeZone);
+        $frmtr = new FrmtrDateShort($locale);
         $frmtr->setFormat('m/d/Y');
         $expectedResult = '05/20/2002';
         self::assertEquals($expectedResult, $frmtr->format($dt));

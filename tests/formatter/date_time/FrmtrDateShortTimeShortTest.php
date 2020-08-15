@@ -14,7 +14,7 @@ use pvc\intl\err\InvalidTimezoneException;
 use pvc\intl\Locale;
 use pvc\intl\TimeZone;
 
-class FrmtrDateTimeTest extends TestCase
+class FrmtrDateShortTimeShortTest extends TestCase
 {
 
     /**
@@ -34,7 +34,7 @@ class FrmtrDateTimeTest extends TestCase
         $dateTimeString = '2002-05-20 14:44';
 
         $dt = new Carbon($dateTimeString, $tz);
-        $frmtr = new FrmtrDateShortTimeShort($loc, $tz);
+        $frmtr = new FrmtrDateShortTimeShort($loc);
 
         self::assertEquals($expectedResult, $frmtr->format($dt));
     }
@@ -57,7 +57,7 @@ class FrmtrDateTimeTest extends TestCase
         $dateTimeString = '2002-05-20 18:35';
         $dt = new Carbon($dateTimeString, new timeZone(($timeZone)));
 
-        $frmtr = new FrmtrDateShortTimeShort($locale, $timeZone);
+        $frmtr = new FrmtrDateShortTimeShort($locale);
         $frmtr->setFormat('m/d/Y g:i a');
         $expectedResult = '05/20/2002 6:35 pm';
         self::assertEquals($expectedResult, $frmtr->format($dt));

@@ -12,7 +12,7 @@ use pvc\intl\DateTimePattern;
 /**
  * Class FrmtrTimeShort
  */
-class FrmtrTimeShort extends FrmtrTimeAbstract
+class FrmtrTimeShort extends FrmtrDateTimeAbstract
 {
 
     /**

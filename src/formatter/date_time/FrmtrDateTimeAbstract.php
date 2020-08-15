@@ -7,6 +7,7 @@
 
 namespace pvc\formatter\date_time;
 
+use Carbon\Carbon;
 use pvc\intl\Locale;
 
 /**
@@ -25,13 +26,13 @@ abstract class FrmtrDateTimeAbstract
      */
     protected Locale $locale;
 
-
     /**
      * FrmtrDateTimeAbstract constructor.
      * @param Locale|null $locale
      */
     public function __construct(Locale $locale = null)
     {
+        $locale = $locale ?: new Locale();
         $this->setLocale($locale);
     }
 
@@ -41,7 +42,7 @@ abstract class FrmtrDateTimeAbstract
      */
     public function getFormat(): string
     {
-        return $this->format;
+        return $this->format ?? $this->getPatternFromLocale();
     }
 
     /**
@@ -64,14 +65,16 @@ abstract class FrmtrDateTimeAbstract
 
     /**
      * @function setLocale
-     * @param Locale|null $locale
+     * @param Locale $locale
      */
-    public function setLocale(Locale $locale = null): void
+    public function setLocale(Locale $locale): void
     {
-        if (is_null($locale)) {
-            $locale = new locale();
-        }
         $this->locale = $locale;
+    }
+
+    public function format(Carbon $dt) : string
+    {
+        return $dt->format($this->getFormat());
     }
 
     /**

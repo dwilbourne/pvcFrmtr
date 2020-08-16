@@ -44,7 +44,7 @@ class FrmtrRangeCollection
     public function format(RangeCollectionInterface $rangeCollection): string
     {
         $resultArray = [];
-        foreach($rangeCollection->getRangeElements() as $rangeElement) {
+        foreach ($rangeCollection->getRangeElements() as $rangeElement) {
             $resultArray[] = $this->formatRangeElement($rangeElement);
         }
         // convert the result array to a string

@@ -3,9 +3,6 @@ parameters:
 	paths:
 		- src
 		- tests
-	excludes_analyse:
-		- src/array_utils/CartesianProduct
-		- tests/parser/file/php/fixtures
 
 	ignoreErrors:
 
@@ -18,6 +15,3 @@ parameters:
 	    -
 	        message: '#PHPUnit\\Framework\\MockObject\\MockObject given\.$#'
 	        path: tests/*
-
-includes:
-    - phpstan_configs\CartesianProduct.neon

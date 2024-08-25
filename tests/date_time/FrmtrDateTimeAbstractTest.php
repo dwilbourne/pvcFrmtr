@@ -8,11 +8,12 @@ declare(strict_types=1);
 
 namespace pvcTests\frmtr\date_time;
 
-use IntlCalendar;
+use DateTimeZone;
+use IntlDateFormatter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\date_time\FrmtrDateTimeAbstract;
-use pvc\interfaces\intl\TimeZoneInterface;
+use pvc\frmtr\err\InvalidIntlCalendarTypeException;
 
 class FrmtrDateTimeAbstractTest extends TestCase
 {
@@ -29,7 +30,7 @@ class FrmtrDateTimeAbstractTest extends TestCase
      */
     public function testDefaultTimezone(): void
     {
-        self::assertNull($this->formatter->getTimeZone());
+        self::assertInstanceOf(DateTimeZone::class, $this->formatter->getTimeZone());
     }
 
     /**
@@ -39,29 +40,40 @@ class FrmtrDateTimeAbstractTest extends TestCase
      */
     public function testSetGetTimeZone(): void
     {
-        $tz = $this->createMock(TimeZoneInterface::class);
+        $tz = new DateTimeZone('America/New_York');
         $this->formatter->setTimeZone($tz);
         self::assertEquals($tz, $this->formatter->getTimeZone());
     }
 
     /**
      * testDefaultCalendar
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::getCalendar
+     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::getCalendarType
      */
     public function testDefaultCalendar(): void
     {
-        self::assertNull($this->formatter->getCalendar());
+        self::assertIsInt($this->formatter->getCalendarType());
+    }
+
+    /**
+     * testSetCalendarThrowsExceptionWithBadCalendarType
+     * @throws InvalidIntlCalendarTypeException
+     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::setCalendarType
+     */
+    public function testSetCalendarThrowsExceptionWithBadCalendarType(): void
+    {
+        self::expectException(InvalidIntlCalendarTypeException::class);
+        $this->formatter->setCalendar(9);
     }
 
     /**
      * testSetGetCalendar
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::setCalendar
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::getCalendar
+     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::setCalendarType
+     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::getCalendarType
      */
     public function testSetGetCalendar(): void
     {
-        $calendar = $this->createMock(IntlCalendar::class);
-        $this->formatter->setCalendar($calendar);
-        self::assertEquals($calendar, $this->formatter->getCalendar());
+        $calendarType = IntlDateFormatter::TRADITIONAL;
+        $this->formatter->setCalendar($calendarType);
+        self::assertEquals($calendarType, $this->formatter->getCalendarType());
     }
 }

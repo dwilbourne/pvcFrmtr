@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace pvc\frmtr\date_time;
 
-use IntlCalendar;
+use DateTimeZone;
 use IntlDateFormatter;
+use pvc\frmtr\err\InvalidIntlCalendarTypeException;
 use pvc\frmtr\Frmtr;
-use pvc\interfaces\intl\TimeZoneInterface;
 
 /**
  * Class FrmtrDateTimeAbstract
@@ -20,42 +20,49 @@ use pvc\interfaces\intl\TimeZoneInterface;
 abstract class FrmtrDateTimeAbstract extends Frmtr
 {
     /**
-     * @var IntlCalendar
+     * @var int
      */
-    protected IntlCalendar $calendar;
+    protected int $calendarType;
 
-    protected TimeZoneInterface $timeZone;
+    protected DateTimeZone $timeZone;
 
     /**
-     * @return IntlCalendar|null
-     *  null defaults to the Gregorian calendar
+     * @var array<int>
      */
-    public function getCalendar(): ?IntlCalendar
+    private $validCalendarTypes = [IntlDateFormatter::TRADITIONAL, IntlDateFormatter::GREGORIAN];
+
+    /**
+     * @return int
+     */
+    public function getCalendarType(): int
     {
-        return $this->calendar ?? null;
+        return $this->calendarType ?? IntlDateFormatter::GREGORIAN;
     }
 
     /**
-     * @param IntlCalendar $calendar
+     * @param int $calendarType
      */
-    public function setCalendar(IntlCalendar $calendar): void
+    public function setCalendar(int $calendarType): void
     {
-        $this->calendar = $calendar;
+        if (!in_array($calendarType, $this->validCalendarTypes)) {
+            throw new InvalidIntlCalendarTypeException();
+        }
+        $this->calendarType = $calendarType;
     }
 
     /**
-     * @return TimeZoneInterface|null
+     * @return DateTimeZone
      * null defaults to the timezone returned by date_default_timezone_get
      */
-    public function getTimeZone(): ?TimeZoneInterface
+    public function getTimeZone(): DateTimeZone
     {
-        return $this->timeZone ?? null;
+        return $this->timeZone ?? new DateTimeZone(date_default_timezone_get());
     }
 
     /**
-     * @param TimeZoneInterface $timeZone
+     * @param DateTimeZone $timeZone
      */
-    public function setTimeZone(TimeZoneInterface $timeZone): void
+    public function setTimeZone(DateTimeZone $timeZone): void
     {
         $this->timeZone = $timeZone;
     }

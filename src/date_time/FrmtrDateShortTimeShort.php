@@ -23,8 +23,8 @@ class FrmtrDateShortTimeShort extends FrmtrDateTimeAbstract
             (string)$this->getLocale(),
             $dateType,
             $timeType,
-            (string)$this->getTimeZone(),
-            $this->getCalendar()
+            $this->getTimeZone()->getName(),
+            $this->getCalendarType()
         );
     }
 }

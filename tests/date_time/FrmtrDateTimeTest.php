@@ -15,7 +15,6 @@ use PHPUnit\Framework\TestCase;
 use pvc\frmtr\date_time\FrmtrDateShort;
 use pvc\frmtr\date_time\FrmtrDateTimeAbstract;
 use pvc\interfaces\intl\LocaleInterface;
-use pvc\interfaces\intl\TimeZoneInterface;
 
 /**
  * Class FrmtrDateTimeTest
@@ -24,14 +23,14 @@ abstract class FrmtrDateTimeTest extends TestCase
 {
     protected LocaleInterface $locale;
 
-    protected TimeZoneInterface $timeZone;
+    protected DateTimeZone $timeZone;
 
     protected string $dateString;
 
     public function setUp(): void
     {
         $this->locale = $this->createMock(LocaleInterface::class);
-        $this->timeZone = $this->createMock(TimeZoneInterface::class);
+        $this->timeZone = new DateTimeZone('America/New_York');
         $this->dateString = '2002-05-20T14:44';
     }
 
@@ -61,7 +60,6 @@ abstract class FrmtrDateTimeTest extends TestCase
         string $comment
     ): void {
         $this->locale->method('__toString')->willReturn($localeString);
-        $this->timeZone->method('__toString')->willReturn($timeZoneString);
 
         $tz = new DateTimeZone($timeZoneString);
         $dt = new DateTimeImmutable($this->dateString, $tz);
@@ -69,7 +67,7 @@ abstract class FrmtrDateTimeTest extends TestCase
 
         $frmtr = $this->makeFormatter();
         $frmtr->setLocale($this->locale);
-        $frmtr->setTimeZone($this->timeZone);
+        $frmtr->setTimeZone($tz);
 
         self::assertEquals($expectedResult, $frmtr->format($timestamp), $comment);
     }

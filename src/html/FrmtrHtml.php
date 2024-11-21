@@ -80,7 +80,7 @@ class FrmtrHtml implements FrmtrHtmlInterface
          */
         if ($value instanceof TagInterface) {
             /** @var TagVoidInterface<AttributeValueType>|MsgInterface|string $item */
-            foreach ($value->getInnerHtml() as $item) {
+            foreach ($value->getChildren() as $item) {
                 $z .= $this->formatInnerHtmlRecurse($item);
             }
             $z .= $value->generateClosingTag();

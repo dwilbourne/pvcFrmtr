@@ -10,6 +10,7 @@ namespace pvc\frmtr\html;
 
 use pvc\interfaces\frmtr\html\FrmtrHtmlInterface;
 use pvc\interfaces\frmtr\msg\FrmtrMsgInterface;
+use pvc\interfaces\html\factory\definitions\AbstractDefinitionFactoryInterface;
 use pvc\interfaces\html\tag\TagInterface;
 use pvc\interfaces\html\tag\TagVoidInterface;
 use pvc\interfaces\intl\LocaleInterface;
@@ -17,8 +18,8 @@ use pvc\interfaces\msg\MsgInterface;
 
 /**
  * Class FrmtrHtml
- * @template AttributeValueType
- * @implements FrmtrHtmlInterface<AttributeValueType>
+ * @template VendorSpecificDefinition of AbstractDefinitionFactoryInterface
+ * @implements FrmtrHtmlInterface<VendorSpecificDefinition>
  */
 class FrmtrHtml implements FrmtrHtmlInterface
 {
@@ -68,7 +69,7 @@ class FrmtrHtml implements FrmtrHtmlInterface
 
     /**
      * format
-     * @param TagVoidInterface<AttributeValueType> $value
+     * @param TagVoidInterface<VendorSpecificDefinition> $value
      * @return string
      */
     public function format($value): string
@@ -79,12 +80,11 @@ class FrmtrHtml implements FrmtrHtmlInterface
          * if it is a tag (not a void tag) then go ahead and generate the inner html and the closing tag
          */
         if ($value instanceof TagInterface) {
-            /** @var TagVoidInterface<AttributeValueType>|MsgInterface|string $item */
+            /** @var TagVoidInterface<VendorSpecificDefinition>|MsgInterface|string $item */
             foreach ($value->getChildren() as $item) {
                 $z .= $this->formatInnerHtmlRecurse($item);
             }
             $z .= $value->generateClosingTag();
-            return $z;
         }
 
         return $z;
@@ -92,7 +92,7 @@ class FrmtrHtml implements FrmtrHtmlInterface
 
     /**
      * formatInnerHtmlRecurse
-     * @param TagVoidInterface<AttributeValueType>|MsgInterface|string $value
+     * @param TagVoidInterface<VendorSpecificDefinition>|MsgInterface|string $value
      * @return string
      */
     protected function formatInnerHtmlRecurse(TagVoidInterface|MsgInterface|string $value): string

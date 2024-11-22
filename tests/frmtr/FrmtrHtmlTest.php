@@ -95,12 +95,12 @@ class FrmtrHtmlTest extends TestCase
         $literalText = 'this string is njot to be translated';
 
         $innerTag = $this->createMock(TagInterface::class);
-        $innerTag->expects($this->once())->method('getInnerHtml')->willReturn([$innerMsg, $literalText]);
+        $innerTag->expects($this->once())->method('getChildren')->willReturn([$innerMsg, $literalText]);
         $innerTag->expects($this->once())->method('generateOpeningTag')->willReturn($innerTagOpeningString);
         $innerTag->expects($this->once())->method('generateClosingTag')->willReturn($innerTagClosingString);
 
         $tag = $this->createMock(TagInterface::class);
-        $tag->expects($this->once())->method('getInnerHtml')->willReturn([$innerTag]);
+        $tag->expects($this->once())->method('getChildren')->willReturn([$innerTag]);
         $tag->expects($this->once())->method('generateOpeningTag')->willReturn($tagOpeningString);
         $tag->expects($this->once())->method('generateClosingTag')->willReturn($tagClosingString);
 

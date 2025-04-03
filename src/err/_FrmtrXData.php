@@ -23,6 +23,8 @@ class _FrmtrXData extends XDataAbstract
             InvalidMinMaxFractionalDigitException::class => 1002,
             InvalidRoundingModeException::class => 1003,
             InvalidIntlCalendarTypeException::class => 1004,
+            NonExistentMessageException::class => 1005,
+            MsgContentNotSetException::class => 1006,
         ];
     }
 
@@ -33,6 +35,8 @@ class _FrmtrXData extends XDataAbstract
             InvalidMinMaxFractionalDigitException::class => 'min / max fractional digits must be greater than or equal to zero',
             InvalidRoundingModeException::class => 'rounding mode must be set to one of the number formatter rounding constants e.g. NumberFormatter::ROUND_HALFUP',
             InvalidIntlCalendarTypeException::class => 'Invalid calendar type, use one of the IntlDateFormatter constants.',
+            NonExistentMessageException::class => 'Catalog has no message that corresponds to msg id ${msgId}',
+            MsgContentNotSetException::class => 'Msg id not set',
         ];
     }
 }

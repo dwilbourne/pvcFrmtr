@@ -42,7 +42,7 @@ abstract class FrmtrDateTimeAbstract extends Frmtr
     /**
      * @param int $calendarType
      */
-    public function setCalendar(int $calendarType): void
+    public function setCalendarType(int $calendarType): void
     {
         if (!in_array($calendarType, $this->validCalendarTypes)) {
             throw new InvalidIntlCalendarTypeException();

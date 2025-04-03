@@ -62,7 +62,7 @@ class FrmtrDateTimeAbstractTest extends TestCase
     public function testSetCalendarThrowsExceptionWithBadCalendarType(): void
     {
         self::expectException(InvalidIntlCalendarTypeException::class);
-        $this->formatter->setCalendar(9);
+        $this->formatter->setCalendarType(9);
     }
 
     /**
@@ -73,7 +73,7 @@ class FrmtrDateTimeAbstractTest extends TestCase
     public function testSetGetCalendar(): void
     {
         $calendarType = IntlDateFormatter::TRADITIONAL;
-        $this->formatter->setCalendar($calendarType);
+        $this->formatter->setCalendarType($calendarType);
         self::assertEquals($calendarType, $this->formatter->getCalendarType());
     }
 }

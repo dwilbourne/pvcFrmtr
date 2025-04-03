@@ -23,6 +23,8 @@ class _FrmtrXDataTest extends XDataTestMaster
      * @covers \pvc\frmtr\err\UnsetLocaleException
      * @covers \pvc\frmtr\err\InvalidMinMaxFractionalDigitException
      * @covers \pvc\frmtr\err\InvalidRoundingModeException
+     * @covers \pvc\frmtr\err\NonExistentMessageException
+     * @covers \pvc\frmtr\err\MsgContentNotSetException
      */
     public function testPvcRegexExceptionLibrary(): void
     {

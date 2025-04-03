@@ -17,12 +17,12 @@ class FrmtrTimeShortTest extends FrmtrDateTimeTest
     public function dataProvider() : array
     {
         return [
-            ['en_US', 'America/New_York', '2:44 PM', 'test US'],
+            ['en_US', 'America/New_York', '2:44' . $this->NNBSP . 'PM', 'test US'],
             ['fr_FR', 'Europe/Paris', '14:44', 'test FR'],
             /**
              * notice that the locale specifies a different separator for Canada
              */
-            ['en_CA', 'America/Toronto', '2:44 p.m.', 'test CA'],
+            ['en_CA', 'America/Toronto', '2:44' . $this->NNBSP . 'p.m.', 'test CA'],
         ];
     }
 

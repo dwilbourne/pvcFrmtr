@@ -12,7 +12,6 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use pvc\frmtr\date_time\FrmtrDateShort;
 use pvc\frmtr\date_time\FrmtrDateTimeAbstract;
 use pvc\interfaces\intl\LocaleInterface;
 
@@ -21,6 +20,11 @@ use pvc\interfaces\intl\LocaleInterface;
  */
 abstract class FrmtrDateTimeTest extends TestCase
 {
+    /**
+     * ICU library now appears to be using narrow non breaking space in certain parts of its formatting output.
+     */
+    protected string $NNBSP = "\u{202F}";
+
     protected LocaleInterface $locale;
 
     protected DateTimeZone $timeZone;

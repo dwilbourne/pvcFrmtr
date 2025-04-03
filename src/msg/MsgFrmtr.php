@@ -11,38 +11,26 @@ namespace pvc\frmtr\msg;
 use MessageFormatter;
 use pvc\frmtr\err\MsgContentNotSetException;
 use pvc\frmtr\err\NonExistentMessageException;
-use pvc\interfaces\frmtr\msg\FrmtrMsgInterface;
-use pvc\interfaces\intl\LocaleInterface;
+use pvc\frmtr\err\UnsetLocaleException;
+use pvc\frmtr\Frmtr;
 use pvc\interfaces\msg\DomainCatalogInterface;
 use pvc\interfaces\msg\MsgInterface;
 
 /**
  * Class MsgFrmtr
  *
- * this class does not extend Frmtr because Frmtr lives in a different library.  So in order to keep dependencies to
- * a minimum, the class takes care of its own Locale awareness.
+ * This formatter behaves a bit differently than the others.  Other formatters depend on a locale, this object
+ * depends on a domain catalog (which is appropriate for a locale)
+ *
+ * @extends Frmtr<MsgInterface>
  */
-class MsgFrmtr implements FrmtrMsgInterface
+class MsgFrmtr extends Frmtr
 {
-    /**
-     * @var LocaleInterface
-     */
-    protected LocaleInterface $locale;
-
     /**
      * @var DomainCatalogInterface
      */
     protected DomainCatalogInterface $domainCatalog;
 
-    /**
-     * @param DomainCatalogInterface $domainCatalog
-     * @param LocaleInterface $locale
-     */
-    public function __construct(DomainCatalogInterface $domainCatalog, LocaleInterface $locale)
-    {
-        $this->domainCatalog = $domainCatalog;
-        $this->setLocale($locale);
-    }
 
     /**
      * getDomainCatalog
@@ -63,57 +51,40 @@ class MsgFrmtr implements FrmtrMsgInterface
     }
 
     /**
-     * getLocale
-     * @return LocaleInterface
-     */
-    public function getLocale(): LocaleInterface
-    {
-        return $this->locale;
-    }
-
-    /**
-     * setLocale
-     * @param LocaleInterface $locale
-     */
-    public function setLocale(LocaleInterface $locale): void
-    {
-        $this->locale = $locale;
-    }
-
-    /**
      * format
      *
      * @param MsgInterface $value
      * @return string
      * @throws MsgContentNotSetException
      * @throws NonExistentMessageException
+     * @throws UnsetLocaleException
      */
     public function format($value): string
     {
+        /**
+         * ensure the message content is set (e.g. msgId, domain and locale)
+         */
         if (!$value->contentIsSet()) {
             throw new MsgContentNotSetException();
         }
-        /** @var string $domain */
-        $domain = $value->getDomain();
 
-        /** @var string $msgId */
+        /**
+         * Calling the load method will only load a new message set if the messages have not already been loaded. The
+         * load method also throws an error if it was unable to load the catalog for the requested domain and locale,
+         * so we know that the domain and the locale of the msg match the domain and locale of the catalog
+         */
+        $this->getDomainCatalog()->load($value->getDomain(), (string)$this->getLocale());
+
+
         $msgId = $value->getMsgId();
-
-        /** @var array<string> $parameters */
-        $parameters = $value->getParameters();
-
-        $this->getDomainCatalog()->load($domain, (string)$this->getLocale());
-        $pattern = $this->getDomainCatalog()->getMessage($msgId);
-
-        if (!$pattern) {
+        if (!$pattern = $this->getDomainCatalog()->getMessage($msgId)) {
             throw new NonExistentMessageException($msgId);
         }
-
         $frmtr = MessageFormatter::create((string)$this->getLocale(), $pattern);
 
         /**
-         * if \MessageFormatter fails for some reason, return an empty string
+         * if MessageFormatter fails for some reason, return an empty string
          */
-        return ($frmtr->format($parameters) ?: '');
+        return ($frmtr->format($value->getParameters()) ?: '');
     }
 }

@@ -38,16 +38,9 @@ class MsgFrmtrTest extends TestCase
     {
         $this->locale = $this->createMock(LocaleInterface::class);
         $this->catalog = $this->createMock(DomainCatalogInterface::class);
-        $this->frmtr = new MsgFrmtr($this->catalog, $this->locale);
-    }
-
-    /**
-     * testConstruct
-     * @covers \pvc\frmtr\msg\MsgFrmtr::__construct
-     */
-    public function testConstruct(): void
-    {
-        self::assertInstanceOf(MsgFrmtr::class, $this->frmtr);
+        $this->frmtr = new MsgFrmtr();
+        $this->frmtr->setDomainCatalog($this->catalog);
+        $this->frmtr->setLocale($this->locale);
     }
 
     /**
@@ -108,10 +101,10 @@ class MsgFrmtrTest extends TestCase
      * @throws NonExistentMessageException
      * @covers \pvc\frmtr\msg\MsgFrmtr::format
      */
-    public function testMsgThrowsExceptionIfMsgIdNotSet(): void
+    public function testFormatMsgThrowsExceptionIfMsgContentNotSet(): void
     {
         $msg = $this->createMock(MsgInterface::class);
-        $msg->method('getMsgId')->willReturn(null);
+        $msg->method('contentIsSet')->willReturn(false);
         self::expectException(MsgContentNotSetException::class);
         $this->frmtr->format($msg);
     }

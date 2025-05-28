@@ -21,15 +21,6 @@ use pvc\interfaces\msg\MsgInterface;
 class FrmtrBoolean extends Frmtr implements FrmtrBooleanInterface
 {
     /**
-     * @var MsgInterface
-     * outputting a word for true or false (yes / no, etc) should be done in a language neutral way, so we use the Msg
-     * library.
-     */
-    protected MsgInterface $msg;
-
-    protected FrmtrMsgInterface $msgFrmtr;
-
-    /**
      * @var string
      *
      * The 'format' string is the msgId in the messages data store.  For example, there are msgIds such as
@@ -41,10 +32,17 @@ class FrmtrBoolean extends Frmtr implements FrmtrBooleanInterface
      * FrmtrBoolean constructor.
      * @param string $format
      */
-    public function __construct(MsgInterface $msg, FrmtrMsgInterface $msgFrmtr, string $format = 'yes')
+    public function __construct(
+        /**
+         * @var MsgInterface
+         * outputting a word for true or false (yes / no, etc) should be done in a language neutral way, so we use the Msg
+         * library.
+         */
+        protected MsgInterface $msg,
+        protected FrmtrMsgInterface $msgFrmtr,
+        string $format = 'yes'
+    )
     {
-        $this->msg = $msg;
-        $this->msgFrmtr = $msgFrmtr;
         $this->setFormat($format);
     }
 

@@ -9,10 +9,12 @@ declare(strict_types=1);
 namespace pvcTests\frmtr\numeric;
 
 use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\err\InvalidMinMaxFractionalDigitException;
 use pvc\frmtr\numeric\FrmtrFloat;
+use pvc\frmtr\numeric\FrmtrNumber;
 use pvc\interfaces\intl\LocaleInterface;
 use pvc\interfaces\struct\range\RangeInterface;
 
@@ -21,11 +23,8 @@ class FrmtrFloatTest extends TestCase
     /**
      * @var RangeInterface<int>|MockObject
      */
-    protected RangeInterface|MockObject $range;
+    protected MockObject $range;
 
-    /**
-     * @var FrmtrFloat
-     */
     protected FrmtrFloat $formatter;
 
     public function setUp(): void
@@ -39,21 +38,20 @@ class FrmtrFloatTest extends TestCase
     }
 
     /**
-     * testFractionalDigitsDefaults
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::__construct
+     * testConstructAndDefaults
      */
-    public function testFractionalDigitsDefaults(): void
+    #[CoversMethod(FrmtrFloat::class, '__construct')]
+    public function testConstructAndDefaults(): void
     {
         $this->range->expects($this->once())->method('setRange')->with(0, 3);
-        $formatter = new FrmtrFloat($this->range);
-        unset($formatter);
+        new FrmtrFloat($this->range);
     }
 
     /**
      * testSetFractionalDigitsThrowsExceptionWithNegativeMinArgument
      * @throws InvalidMinMaxFractionalDigitException
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::setFractionalDigits
      */
+    #[CoversMethod(FrmtrFloat::class, 'setFractionalDigits')]
     public function testSetFractionalDigitsThrowsExceptionWithNegativeMinArgument(): void
     {
         self::expectException(InvalidMinMaxFractionalDigitException::class);
@@ -63,8 +61,8 @@ class FrmtrFloatTest extends TestCase
     /**
      * testSetFractionalDigitsThrowsExceptionWithNegativeMaxArgument
      * @throws InvalidMinMaxFractionalDigitException
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::setFractionalDigits
      */
+    #[CoversMethod(FrmtrFloat::class, 'setFractionalDigits')]
     public function testSetFractionalDigitsThrowsExceptionWithNegativeMaxArgument(): void
     {
         self::expectException(InvalidMinMaxFractionalDigitException::class);
@@ -74,9 +72,9 @@ class FrmtrFloatTest extends TestCase
     /**
      * testSetGetFractionalDigits
      * @throws InvalidMinMaxFractionalDigitException
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::setFractionalDigits
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::getFractionalDigits
      */
+    #[CoversMethod(FrmtrFloat::class, 'setFractionalDigits')]
+    #[CoversMethod(FrmtrFloat::class, 'getFractionalDigits')]
     public function testSetGetFractionalDigits(): void
     {
         $min = 2;
@@ -88,11 +86,11 @@ class FrmtrFloatTest extends TestCase
 
     /**
      * @function testFormat
-     * @covers \pvc\frmtr\numeric\FrmtrNumber::createFormatter
-     * @covers \pvc\frmtr\numeric\FrmtrNumber::format
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::createFormatter
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::format
      */
+    #[CoversMethod(FrmtrNumber::class, 'createFormatter')]
+    #[CoversMethod(FrmtrNumber::class, 'format')]
+    #[CoversMethod(FrmtrFloat::class, 'createFormatter')]
+    #[CoversMethod(FrmtrFloat::class, 'format')]
     public function testFormat(): void
     {
         $this->range->method('getRange')->willReturn([3, 5]);

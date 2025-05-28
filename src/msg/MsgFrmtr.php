@@ -26,9 +26,6 @@ use pvc\interfaces\msg\MsgInterface;
  */
 class MsgFrmtr extends Frmtr
 {
-    /**
-     * @var DomainCatalogInterface
-     */
     protected DomainCatalogInterface $domainCatalog;
 
 

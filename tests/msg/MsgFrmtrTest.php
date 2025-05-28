@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace pvcTests\frmtr\msg;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\err\MsgContentNotSetException;
@@ -17,21 +18,19 @@ use pvc\interfaces\intl\LocaleInterface;
 use pvc\interfaces\msg\DomainCatalogInterface;
 use pvc\interfaces\msg\MsgInterface;
 
+
 class MsgFrmtrTest extends TestCase
 {
     /**
      * @var LocaleInterface
      */
-    protected LocaleInterface $locale;
+    protected MockObject $locale;
 
     /**
      * @var DomainCatalogInterface|MockObject
      */
-    protected DomainCatalogInterface|MockObject $catalog;
+    protected MockObject $catalog;
 
-    /**
-     * @var MsgFrmtr
-     */
     protected MsgFrmtr $frmtr;
 
     public function setUp(): void
@@ -45,9 +44,10 @@ class MsgFrmtrTest extends TestCase
 
     /**
      * testSetGetDomainCatalog
-     * @covers \pvc\frmtr\msg\MsgFrmtr::setDomainCatalog
-     * @covers \pvc\frmtr\msg\MsgFrmtr::getDomainCatalog
      */
+    #[CoversMethod(MsgFrmtr::class, 'setDomainCatalog')]
+    #[CoversMethod(MsgFrmtr::class, 'getDomainCatalog')]
+
     public function testSetGetDomainCatalog(): void
     {
         $newCatalog = $this->createMock(DomainCatalogInterface::class);
@@ -57,9 +57,10 @@ class MsgFrmtrTest extends TestCase
 
     /**
      * testSetGetLocale
-     * @covers \pvc\frmtr\msg\MsgFrmtr::setLocale
-     * @covers \pvc\frmtr\msg\MsgFrmtr::getLocale
      */
+    #[CoversMethod(MsgFrmtr::class, 'setLocale')]
+    #[CoversMethod(MsgFrmtr::class, 'getLocale')]
+
     public function testSetGetLocale(): void
     {
         $newLocale = $this->createMock(LocaleInterface::class);
@@ -69,8 +70,8 @@ class MsgFrmtrTest extends TestCase
 
     /**
      * testFormat
-     * @covers \pvc\frmtr\msg\MsgFrmtr::format
      */
+    #[CoversMethod(MsgFrmtr::class, 'format')]
     public function testFormat(): void
     {
         $this->locale->method('__toString')->willReturn('fr_FR');
@@ -99,8 +100,8 @@ class MsgFrmtrTest extends TestCase
      * testMsgThrowsExceptionIfMsgIdNotSet
      * @throws MsgContentNotSetException
      * @throws NonExistentMessageException
-     * @covers \pvc\frmtr\msg\MsgFrmtr::format
      */
+    #[CoversMethod(MsgFrmtr::class, 'format')]
     public function testFormatMsgThrowsExceptionIfMsgContentNotSet(): void
     {
         $msg = $this->createMock(MsgInterface::class);
@@ -113,8 +114,8 @@ class MsgFrmtrTest extends TestCase
      * testMsgTthrowsExceptionIfMessageIsNotInCatalog
      * @throws MsgContentNotSetException
      * @throws NonExistentMessageException
-     * @covers \pvc\frmtr\msg\MsgFrmtr::format
      */
+    #[CoversMethod(MsgFrmtr::class, 'format')]
     public function testMsgThrowsExceptionIfMessageIsNotInCatalog(): void
     {
         $msgId = 'msgId';

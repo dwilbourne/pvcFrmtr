@@ -7,8 +7,10 @@ declare (strict_types=1);
 
 namespace pvcTests\frmtr\text;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\text\FrmtrText;
+
 
 class FrmtrTextTest extends TestCase
 {
@@ -21,8 +23,8 @@ class FrmtrTextTest extends TestCase
 
     /**
      * testFormat
-     * @covers \pvc\frmtr\text\FrmtrText::format
      */
+    #[CoversMethod(FrmtrText::class, 'format')]
     public function testFormat(): void
     {
         $testValue = 'some string';

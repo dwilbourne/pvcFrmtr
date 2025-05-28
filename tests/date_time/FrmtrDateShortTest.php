@@ -17,7 +17,7 @@ class FrmtrDateShortTest extends FrmtrDateTimeTest
      * dataProvider
      * @return array<string, string, string, string>
      */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             ['en_US', 'America/New_York', '5/20/02', 'test US'],

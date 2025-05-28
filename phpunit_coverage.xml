@@ -1,10 +1,15 @@
 <?xml version="1.0"?>
-<phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        colors="true"
-        bootstrap="vendor/autoload.php"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
-        displayDetailsOnPhpunitDeprecations="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         displayDetailsOnPhpunitDeprecations="true">
+
+    <coverage>
+        <report>
+            <html outputDirectory="coverage"/>
+        </report>
+    </coverage>
 
     <source restrictDeprecations="true"
             restrictNotices="true"
@@ -12,6 +17,10 @@
         <include>
             <directory>src*</directory>
         </include>
+        <!-- do not need to test the messages file -->
+        <exclude>
+            <file>src/messages/FrmtrMessages.en.php</file>
+        </exclude>
     </source>
 
     <testsuites>
@@ -21,5 +30,4 @@
             <exclude>tests/date_time/FrmtrDateTimeTest.php</exclude>
         </testsuite>
     </testsuites>
-
 </phpunit>

@@ -69,7 +69,10 @@ abstract class FrmtrNumber extends Frmtr
     protected function createFormatter(): NumberFormatter
     {
         $formatter = new NumberFormatter((string)$this->getLocale(), NumberFormatter::DECIMAL);
-        $formatter->setAttribute(NumberFormatter::GROUPING_USED, ($this->useGroupingSeparator() ? 1 : 0));
+        $formatter->setAttribute(
+            NumberFormatter::GROUPING_USED,
+            ($this->useGroupingSeparator() !== 0 ? 1 : 0)
+        );
         $formatter->setAttribute(NumberFormatter::ROUNDING_MODE, $this->getRoundingMode());
         return $formatter;
     }

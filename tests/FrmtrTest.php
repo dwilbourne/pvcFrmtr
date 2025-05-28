@@ -8,6 +8,7 @@ declare (strict_types=1);
 
 namespace pvcTests\frmtr;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\err\UnsetLocaleException;
@@ -18,9 +19,8 @@ class FrmtrTest extends TestCase
 {
     /**
      * @template DataType
-     * @var Frmtr<DataType>|MockObject
      */
-    protected Frmtr $frmtr;
+    protected MockObject $frmtr;
 
     public function setUp(): void
     {
@@ -29,8 +29,8 @@ class FrmtrTest extends TestCase
 
     /**
      * testGetLocaleWhenNotSetThrowsError
-     * @covers \pvc\frmtr\Frmtr::getLocale
      */
+    #[CoversMethod(Frmtr::class, 'getLocale')]
     public function testGetLocaleWhenNotSetThrowsError(): void
     {
         self::expectException(UnsetLocaleException::class);
@@ -41,9 +41,9 @@ class FrmtrTest extends TestCase
     /**
      * testSetGetLocale
      * @throws UnsetLocaleException
-     * @covers \pvc\frmtr\Frmtr::setLocale
-     * @covers \pvc\frmtr\Frmtr::getLocale
      */
+    #[CoversMethod(Frmtr::class, 'setLocale')]
+    #[CoversMethod(Frmtr::class, 'getLocale')]
     public function testSetGetLocale(): void
     {
         $mockLocale = $this->createMock(LocaleInterface::class);

@@ -7,6 +7,7 @@ declare (strict_types=1);
 
 namespace pvcTests\frmtr\range;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\range\FrmtrRange;
@@ -17,7 +18,7 @@ class FrmtrRangeTest extends TestCase
 {
     protected FrmtrRange $formatter;
 
-    protected FrmtrInterface|MockObject $rangeElementFormatter;
+    protected MockObject $rangeElementFormatter;
 
     public function setUp(): void
     {
@@ -27,8 +28,8 @@ class FrmtrRangeTest extends TestCase
 
     /**
      * testConstruct
-     * @covers \pvc\frmtr\range\FrmtrRange::__construct
      */
+    #[CoversMethod(FrmtrRange::class, '__construct')]
     public function testConstruct(): void
     {
         self::assertInstanceOf(FrmtrRange::class, $this->formatter);
@@ -36,9 +37,10 @@ class FrmtrRangeTest extends TestCase
 
     /**
      * testSetGetRangeElementFormatter
-     * @covers \pvc\frmtr\range\FrmtrRange::getRangeElementFrmtr
-     * @covers \pvc\frmtr\range\FrmtrRange::setRangeElementFrmtr
      */
+    #[CoversMethod(FrmtrRange::class, 'getRangeElementFrmtr')]
+    #[CoversMethod(FrmtrRange::class, 'setRangeElementFrmtr')]
+
     public function testSetGetRangeElementFormatter(): void
     {
         $newElementFormatter = $this->createMock(FrmtrInterface::class);
@@ -48,17 +50,15 @@ class FrmtrRangeTest extends TestCase
 
     /**
      * testFormatWithDifferentMinMax
-     * @covers \pvc\frmtr\range\FrmtrRange::format
      */
+    #[CoversMethod(FrmtrRange::class, 'format')]
     public function testFormatWithDifferentMinMax(): void
     {
         $min = 3;
         $max = 5;
         $mockRange = $this->createMock(RangeInterface::class);
         $mockRange->expects($this->once())->method('getRange')->willReturn([$min, $max]);
-        $callBack = function (int $x) {
-            return (string)$x;
-        };
+        $callBack = (fn(int $x): string => (string)$x);
         $this->rangeElementFormatter->expects($this->exactly(2))->method('format')->willReturnCallback($callBack);
         $expectedResult = '3-5';
         self::assertEquals($expectedResult, $this->formatter->format($mockRange));
@@ -66,17 +66,15 @@ class FrmtrRangeTest extends TestCase
 
     /**
      * testFormatWithIdenticalMinMax
-     * @covers \pvc\frmtr\range\FrmtrRange::format
      */
+    #[CoversMethod(FrmtrRange::class, 'format')]
     public function testFormatWithIdenticalMinMax(): void
     {
         $min = 3;
         $max = 3;
         $mockRange = $this->createMock(RangeInterface::class);
         $mockRange->expects($this->once())->method('getRange')->willReturn([$min, $max]);
-        $callBack = function (int $x) {
-            return (string)$x;
-        };
+        $callBack = (fn(int $x): string => (string)$x);
         $this->rangeElementFormatter->expects($this->once())->method('format')->willReturnCallback($callBack);
         $expectedResult = '3';
         self::assertEquals($expectedResult, $this->formatter->format($mockRange));

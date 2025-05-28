@@ -10,14 +10,19 @@ namespace pvcTests\frmtr\date_time;
 
 use DateTimeZone;
 use IntlDateFormatter;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\date_time\FrmtrDateTimeAbstract;
 use pvc\frmtr\err\InvalidIntlCalendarTypeException;
 
+#[CoversMethod(FrmtrDateTimeAbstract::class, 'getTimeZone')]
+#[CoversMethod(FrmtrDateTimeAbstract::class, 'setTimeZone')]
+#[CoversMethod(FrmtrDateTimeAbstract::class, 'getCalendarType')]
+#[CoversMethod(FrmtrDateTimeAbstract::class, 'setCalendarType')]
 class FrmtrDateTimeAbstractTest extends TestCase
 {
-    protected FrmtrDateTimeAbstract|MockObject $formatter;
+    protected MockObject $formatter;
 
     public function setUp(): void
     {
@@ -26,7 +31,6 @@ class FrmtrDateTimeAbstractTest extends TestCase
 
     /**
      * testDefaultTimezone
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::getTimeZone
      */
     public function testDefaultTimezone(): void
     {
@@ -35,8 +39,6 @@ class FrmtrDateTimeAbstractTest extends TestCase
 
     /**
      * testSetGetTimeZone
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::setTimeZone
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::getTimeZone
      */
     public function testSetGetTimeZone(): void
     {
@@ -47,7 +49,6 @@ class FrmtrDateTimeAbstractTest extends TestCase
 
     /**
      * testDefaultCalendar
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::getCalendarType
      */
     public function testDefaultCalendar(): void
     {
@@ -57,7 +58,6 @@ class FrmtrDateTimeAbstractTest extends TestCase
     /**
      * testSetCalendarThrowsExceptionWithBadCalendarType
      * @throws InvalidIntlCalendarTypeException
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::setCalendarType
      */
     public function testSetCalendarThrowsExceptionWithBadCalendarType(): void
     {
@@ -67,8 +67,6 @@ class FrmtrDateTimeAbstractTest extends TestCase
 
     /**
      * testSetGetCalendar
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::setCalendarType
-     * @covers \pvc\frmtr\date_time\FrmtrDateTimeAbstract::getCalendarType
      */
     public function testSetGetCalendar(): void
     {

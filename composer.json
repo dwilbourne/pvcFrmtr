@@ -21,14 +21,13 @@
 	},
 	"minimum-stability": "dev",
 	"require": {
-		"pvc/interfaces": "dev-master",
-		"pvc/err": "dev-master",
+		"pvc/interfaces": "*",
+		"pvc/err": "*",
 		"ext-intl": "*"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^9",
-		"squizlabs/php_codesniffer": "*",
-		"friendsofphp/php-cs-fixer": "*",
-		"phpstan/phpstan": "*"
+		"phpunit/phpunit": "^10",
+		"phpstan/phpstan": "^2",
+		"rector/rector": "^2"
 	}
 }

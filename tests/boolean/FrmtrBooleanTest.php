@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace pvcTests\frmtr\boolean;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\boolean\FrmtrBoolean;
 use pvc\interfaces\frmtr\msg\FrmtrMsgInterface;
@@ -14,9 +16,9 @@ use pvc\interfaces\msg\MsgInterface;
 
 class FrmtrBooleanTest extends TestCase
 {
-    protected MsgInterface $msg;
+    protected MockObject $msg;
 
-    protected FrmtrMsgInterface $msgFormatter;
+    protected MockObject $msgFormatter;
 
     protected FrmtrBoolean $boolFormatter;
 
@@ -29,8 +31,8 @@ class FrmtrBooleanTest extends TestCase
 
     /**
      * testConstruct
-     * @covers \pvc\frmtr\boolean\FrmtrBoolean::__construct
      */
+    #[CoversMethod(FrmtrBoolean::class, '__construct')]
     public function testConstruct(): void
     {
         self::assertInstanceOf(FrmtrBoolean::class, $this->boolFormatter);
@@ -38,9 +40,10 @@ class FrmtrBooleanTest extends TestCase
 
     /**
      * testSetGetFormat
-     * @covers \pvc\frmtr\boolean\FrmtrBoolean::setFormat
-     * @covers \pvc\frmtr\boolean\FrmtrBoolean::getFormat
      */
+    #[CoversMethod(FrmtrBoolean::class, 'setFormat')]
+    #[CoversMethod(FrmtrBoolean::class, 'getFormat')]
+
     public function testSetGetFormat() : void
     {
         $format = '1';
@@ -50,8 +53,8 @@ class FrmtrBooleanTest extends TestCase
 
     /**
      * testFormat
-     * @covers \pvc\frmtr\boolean\FrmtrBoolean::format
      */
+    #[CoversMethod(FrmtrBoolean::class, 'format')]
     public function testFormat() : void
     {
         $format = 'yes';

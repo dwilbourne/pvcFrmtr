@@ -9,17 +9,16 @@ declare(strict_types=1);
 namespace pvcTests\frmtr\numeric;
 
 use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\err\InvalidRoundingModeException;
+use pvc\frmtr\numeric\FrmtrFloat;
 use pvc\frmtr\numeric\FrmtrNumber;
 
 class FrmtrNumberTest extends TestCase
 {
-    /**
-     * @var FrmtrNumber|MockObject
-     */
-    protected FrmtrNumber $formatter;
+    protected MockObject $formatter;
 
     public function setUp(): void
     {
@@ -28,8 +27,9 @@ class FrmtrNumberTest extends TestCase
 
     /**
      * testDefaultRoundingMode
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::__construct
      */
+    #[CoversMethod(FrmtrFloat::class, '__construct')]
+    #[CoversMethod(FrmtrFloat::class, 'getRoundingMode')]
     public function testDefaultRoundingMode(): void
     {
         $expectedResult = NumberFormatter::ROUND_HALFUP;
@@ -39,8 +39,8 @@ class FrmtrNumberTest extends TestCase
     /**
      * testSetRoundingModeThrowsExceptionWithBadArgument
      * @throws InvalidRoundingModeException
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::setRoundingMode
      */
+    #[CoversMethod(FrmtrFloat::class, 'setRoundingMode')]
     public function testSetRoundingModeThrowsExceptionWithBadArgument(): void
     {
         self::expectException(InvalidRoundingModeException::class);
@@ -50,9 +50,9 @@ class FrmtrNumberTest extends TestCase
     /**
      * testSetGetRoundingMode
      * @throws InvalidRoundingModeException
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::setRoundingMode
-     * @covers \pvc\frmtr\numeric\FrmtrFloat::getRoundingMode
      */
+    #[CoversMethod(FrmtrFloat::class, 'setRoundingMode')]
+    #[CoversMethod(FrmtrFloat::class, 'getRoundingMode')]
     public function testSetGetRoundingMode(): void
     {
         $roundingMode = NumberFormatter::ROUND_FLOOR;
@@ -62,8 +62,8 @@ class FrmtrNumberTest extends TestCase
 
     /**
      * testUseGroupingSeparatorDefault
-     * @coversNothing
      */
+    #[CoversMethod(FrmtrNumber::class, 'useGroupingSeparator')]
     public function testUseGroupingSeparatorDefault(): void
     {
         self::assertEquals(1, $this->formatter->useGroupingSeparator());
@@ -71,9 +71,9 @@ class FrmtrNumberTest extends TestCase
 
     /**
      * testSetGetUseGroupingSeparator
-     * @covers \pvc\frmtr\numeric\FrmtrNumber::setUseGroupingSeparator
-     * @covers \pvc\frmtr\numeric\FrmtrNumber::useGroupingSeparator
      */
+    #[CoversMethod(FrmtrNumber::class, 'setUseGroupingSeparator')]
+    #[CoversMethod(FrmtrNumber::class, 'useGroupingSeparator')]
     public function testSetGetUseGroupingSeparator(): void
     {
         $useSeparator = false;

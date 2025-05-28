@@ -11,21 +11,28 @@ namespace pvcTests\frmtr\date_time;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use pvc\frmtr\date_time\FrmtrDateShort;
+use pvc\frmtr\date_time\FrmtrDateShortTimeShort;
 use pvc\frmtr\date_time\FrmtrDateTimeAbstract;
+use pvc\frmtr\date_time\FrmtrTimeShort;
 use pvc\interfaces\intl\LocaleInterface;
 
 /**
  * Class FrmtrDateTimeTest
  */
+
 abstract class FrmtrDateTimeTest extends TestCase
 {
     /**
-     * ICU library now appears to be using narrow non breaking space in certain parts of its formatting output.
+     * ICU library now appears to be using narrow non-breaking space in certain parts of its formatting output.
      */
-    protected string $NNBSP = "\u{202F}";
+    protected const NNBSP = "\u{202F}";
 
-    protected LocaleInterface $locale;
+    protected MockObject $locale;
 
     protected DateTimeZone $timeZone;
 
@@ -45,18 +52,15 @@ abstract class FrmtrDateTimeTest extends TestCase
      * @param string $expectedResult
      * @param string $comment
      * @throws Exception
-     *
-     * @dataProvider dataProvider
-     *
-     * @covers       \pvc\frmtr\date_time\FrmtrDateShort::createFormatter
-     * @covers       \pvc\frmtr\date_time\FrmtrDateShort::format
-     *
-     * @covers       \pvc\frmtr\date_time\FrmtrDateShortTimeShort::createFormatter
-     * @covers       \pvc\frmtr\date_time\FrmtrDateShortTimeShort::format
-     *
-     * @covers       \pvc\frmtr\date_time\FrmtrTimeShort::createFormatter
-     * @covers       \pvc\frmtr\date_time\FrmtrTimeShort::format
      */
+
+    #[CoversMethod(FrmtrDateShort::class, 'createFormatter')]
+    #[CoversMethod(FrmtrDateShort::class, 'format')]
+    #[CoversMethod(FrmtrDateShortTimeShort::class, 'createFormatter')]
+    #[CoversMethod(FrmtrDateShortTimeShort::class, 'format')]
+    #[CoversMethod(FrmtrTimeShort::class, 'createFormatter')]
+    #[CoversMethod(FrmtrTimeShort::class, 'format')]
+    #[DataProvider('dataProvider')]
     public function testFormat(
         string $localeString,
         string $timeZoneString,
@@ -75,6 +79,7 @@ abstract class FrmtrDateTimeTest extends TestCase
 
         self::assertEquals($expectedResult, $frmtr->format($timestamp), $comment);
     }
+
 
     abstract public function makeFormatter(): FrmtrDateTimeAbstract;
 }

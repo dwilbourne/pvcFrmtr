@@ -19,9 +19,6 @@ use pvc\frmtr\Frmtr;
  */
 abstract class FrmtrDateTimeAbstract extends Frmtr
 {
-    /**
-     * @var int
-     */
     protected int $calendarType;
 
     protected DateTimeZone $timeZone;
@@ -29,7 +26,11 @@ abstract class FrmtrDateTimeAbstract extends Frmtr
     /**
      * @var array<int>
      */
-    private $validCalendarTypes = [IntlDateFormatter::TRADITIONAL, IntlDateFormatter::GREGORIAN];
+    private array $validCalendarTypes
+        = [
+            IntlDateFormatter::TRADITIONAL,
+            IntlDateFormatter::GREGORIAN
+        ];
 
     /**
      * @return int

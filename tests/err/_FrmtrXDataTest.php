@@ -8,8 +8,14 @@ declare (strict_types=1);
 
 namespace pvcTests\frmtr\err;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use pvc\err\XDataTestMaster;
 use pvc\frmtr\err\_FrmtrXData;
+use pvc\frmtr\err\InvalidMinMaxFractionalDigitException;
+use pvc\frmtr\err\InvalidRoundingModeException;
+use pvc\frmtr\err\MsgContentNotSetException;
+use pvc\frmtr\err\NonExistentMessageException;
+use pvc\frmtr\err\UnsetLocaleException;
 
 /**
  * Class _FrmtrXDataTest
@@ -18,14 +24,14 @@ class _FrmtrXDataTest extends XDataTestMaster
 {
     /**
      * @function testPvcRegexExceptionLibrary
-     * @covers \pvc\frmtr\err\_FrmtrXData::getXMessageTemplates
-     * @covers \pvc\frmtr\err\_FrmtrXData::getLocalXCodes
-     * @covers \pvc\frmtr\err\UnsetLocaleException
-     * @covers \pvc\frmtr\err\InvalidMinMaxFractionalDigitException
-     * @covers \pvc\frmtr\err\InvalidRoundingModeException
-     * @covers \pvc\frmtr\err\NonExistentMessageException
-     * @covers \pvc\frmtr\err\MsgContentNotSetException
      */
+    #[CoversMethod(_FrmtrXData::class, 'getXMessageTemplates')]
+    #[CoversMethod(_FrmtrXData::class, 'getLocalXCodes')]
+    #[CoversMethod(UnsetLocaleException::class, '__construct')]
+    #[CoversMethod(InvalidMinMaxFractionalDigitException::class, '__construct')]
+    #[CoversMethod(InvalidRoundingModeException::class, '__construct')]
+    #[CoversMethod(NonExistentMessageException::class, '__construct')]
+    #[CoversMethod(MsgContentNotSetException::class, '__construct')]
     public function testPvcRegexExceptionLibrary(): void
     {
         $xData = new _FrmtrXData();

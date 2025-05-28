@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace pvc\frmtr\numeric;
 
 use NumberFormatter;
+use Override;
 use pvc\frmtr\err\InvalidMinMaxFractionalDigitException;
 use pvc\interfaces\struct\range\RangeInterface;
 
@@ -17,16 +18,10 @@ use pvc\interfaces\struct\range\RangeInterface;
 class FrmtrFloat extends FrmtrNumber
 {
     /**
-     * @var RangeInterface<int>
+     * @param  RangeInterface<int>  $fractionalDigits
      */
-    protected RangeInterface $fractionalDigits;
-
-    /**
-     * @param RangeInterface<int> $range
-     */
-    public function __construct(RangeInterface $range)
+    public function __construct(protected RangeInterface $fractionalDigits)
     {
-        $this->fractionalDigits = $range;
         /**
          * these are the default values for Decimal NumberFormatter when you create it
          */
@@ -55,7 +50,7 @@ class FrmtrFloat extends FrmtrNumber
          * the theoretical limit is something really large like 2^32, so we are not going to error check it on the
          * large side
          */
-        if (($minDigits < 0) || ($maxDigits < 0)) {
+        if ($maxDigits < 0 || $minDigits < 0) {
             throw new InvalidMinMaxFractionalDigitException();
         }
         $this->fractionalDigits->setRange($minDigits, $maxDigits);
@@ -65,6 +60,7 @@ class FrmtrFloat extends FrmtrNumber
      * @function createFormatter
      * @return NumberFormatter
      */
+    #[Override]
     protected function createFormatter(): NumberFormatter
     {
         $fractionalDigits = $this->fractionalDigits->getRange();

@@ -6,8 +6,11 @@
 
 namespace pvcTests\frmtr\numeric;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use pvc\frmtr\numeric\FrmtrCurrency;
+use pvc\frmtr\numeric\FrmtrNumber;
 use pvc\interfaces\intl\LocaleInterface;
 
 class FrmtrCurrencyTest extends TestCase
@@ -27,12 +30,12 @@ class FrmtrCurrencyTest extends TestCase
      * @param float $value
      * @param string $expectedValue
      * @param string $comment
-     * @dataProvider numberProvider
-     * @covers       \pvc\frmtr\numeric\FrmtrNumber::createFormatter
-     * @covers       \pvc\frmtr\numeric\FrmtrNumber::format
-     * @covers       \pvc\frmtr\numeric\FrmtrCurrency::createFormatter
-     * @covers       \pvc\frmtr\numeric\FrmtrCurrency::format
      */
+    #[CoversMethod(FrmtrNumber::class, 'createFormatter')]
+    #[CoversMethod(FrmtrNumber::class, 'format')]
+    #[CoversMethod(FrmtrCurrency::class, 'createFormatter')]
+    #[CoversMethod(FrmtrCurrency::class, 'format')]
+    #[DataProvider('numberProvider')]
     public function testFormat(float $value, string $expectedValue, string $comment): void
     {
         self::assertEquals($expectedValue, $this->frmtr->format($value));
@@ -44,7 +47,7 @@ class FrmtrCurrencyTest extends TestCase
      *
      * This test data is specific to the locale for the United States
      */
-    public function numberProvider()
+    public static function numberProvider(): array
     {
         return [
             [5, '$5.00', 'basic test with integer'],
